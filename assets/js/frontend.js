@@ -27,6 +27,7 @@
         this.progressBar = node.querySelector('.pitch-deck-progress__bar');
         this.counterCurrent = node.querySelector('.pitch-deck-counter__current');
         this.counterTotal = node.querySelector('.pitch-deck-counter__total');
+        this.slideSelect = node.querySelector('.pitch-deck-slide-selector__select');
 
         this.isPlaying = false;
 
@@ -49,6 +50,23 @@
 
         if (this.counterTotal) {
             this.counterTotal.textContent = String(this.slides.length);
+        }
+
+        if (this.slideSelect) {
+            this.slideSelect.innerHTML = '';
+            this.slides.forEach(function (slide, index) {
+                var option = document.createElement('option');
+                option.value = String(index);
+
+                var heading = slide.querySelector('h1, h2, h3, h4, h5, h6');
+                if (heading && heading.textContent.trim()) {
+                    option.textContent = heading.textContent.trim();
+                } else {
+                    option.textContent = 'Slide ' + (index + 1);
+                }
+
+                this.slideSelect.appendChild(option);
+            }.bind(this));
         }
 
         this.bindEvents();
@@ -82,6 +100,16 @@
                     self.pauseAutoplay(true);
                 } else {
                     self.startAutoplay(true);
+                }
+            });
+        }
+
+        if (this.slideSelect) {
+            this.slideSelect.addEventListener('change', function () {
+                var selectedIndex = parseInt(this.value, 10);
+                if (!isNaN(selectedIndex)) {
+                    self.goTo(selectedIndex);
+                    self.pauseAutoplay();
                 }
             });
         }
@@ -175,6 +203,10 @@
     PitchDeck.prototype.updateUI = function () {
         if (this.counterCurrent) {
             this.counterCurrent.textContent = String(this.index + 1);
+        }
+
+        if (this.slideSelect) {
+            this.slideSelect.value = String(this.index);
         }
 
         if (this.progressBar) {

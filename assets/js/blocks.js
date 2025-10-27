@@ -265,13 +265,25 @@
                 'data-show-counter': attributes.showCounter ? 'true' : 'false'
             });
 
-            var children = [
+            var children = [];
+
+            if (attributes.showCounter) {
+                children.push(
+                    createElement(
+                        'div',
+                        { className: 'pitch-deck-slide-selector' },
+                        createElement('select', { className: 'pitch-deck-slide-selector__select', 'aria-label': __('Jump to slide', 'pitch-deck') })
+                    )
+                );
+            }
+
+            children.push(
                 createElement(
                     'div',
                     { className: 'pitch-deck-slides' },
                     createElement(InnerBlocks.Content, null)
                 )
-            ];
+            );
 
             if (attributes.showControls) {
                 children.push(
