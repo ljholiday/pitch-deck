@@ -1,11 +1,11 @@
 <?php
 /**
  * Plugin Name: Pitch Deck
- * Plugin URI:  https://example.com/pitch-deck
+ * Plugin URI:  https://github.com/ljholiday/pitch-deck
  * Description: Build and present slide decks directly inside the block editor.
  * Version:     2.0.0
  * Author:      Pitch Deck Contributors
- * Author URI:  https://example.com
+ * Author URI:  https://github.com/ljholiday
  * License:     GPL-2.0-or-later
  * Text Domain: pitch-deck
  *
