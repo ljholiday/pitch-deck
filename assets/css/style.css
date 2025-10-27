@@ -109,7 +109,6 @@
 .pitch-deck-button:focus-visible,
 .pitch-deck-button:hover {
     background: var(--pitch-deck-accent-strong);
-    transform: translateY(-2px);
     box-shadow: 0 16px 32px rgba(37, 99, 235, 0.32);
 }
 
@@ -258,11 +257,6 @@ body.wp-admin .pitch-deck-slide:not(:last-child) {
         flex: 1 0 auto;
         min-width: 44px;
         padding-inline: 1rem;
-    }
-
-    .pitch-deck-button--play,
-    .pitch-deck-button--fullscreen {
-        margin-left: 0;
     }
 }
 
