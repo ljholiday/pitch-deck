@@ -36,7 +36,8 @@
         'core/buttons',
         'core/quote',
         'core/embed',
-        'core/video'
+        'core/video',
+        'core/table'
     ];
 
     var SLIDE_TEMPLATE = [
