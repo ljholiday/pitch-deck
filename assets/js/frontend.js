@@ -24,7 +24,6 @@
         this.btnPrev = node.querySelector('.pitch-deck-button--prev');
         this.btnNext = node.querySelector('.pitch-deck-button--next');
         this.btnPlay = node.querySelector('.pitch-deck-button--play');
-        this.btnFullscreen = node.querySelector('.pitch-deck-button--fullscreen');
         this.progressBar = node.querySelector('.pitch-deck-progress__bar');
         this.counterCurrent = node.querySelector('.pitch-deck-counter__current');
         this.counterTotal = node.querySelector('.pitch-deck-counter__total');
@@ -87,16 +86,6 @@
             });
         }
 
-        if (this.btnFullscreen) {
-            this.btnFullscreen.addEventListener('click', function () {
-                if (self.isFullscreen()) {
-                    self.exitFullscreen();
-                } else {
-                    self.enterFullscreen();
-                }
-            });
-        }
-
         this.root.addEventListener('keydown', function (event) {
             switch (event.keyCode) {
                 case KEY_LEFT:
@@ -109,11 +98,6 @@
                     event.preventDefault();
                     self.next();
                     self.pauseAutoplay();
-                    break;
-                case KEY_ESCAPE:
-                    if (self.isFullscreen()) {
-                        self.exitFullscreen();
-                    }
                     break;
                 default:
                     break;
@@ -152,11 +136,6 @@
             self.touchStart = null;
         });
 
-        ['fullscreenchange', 'webkitfullscreenchange', 'mozfullscreenchange', 'MSFullscreenChange'].forEach(function (eventName) {
-            document.addEventListener(eventName, function () {
-                self.syncFullscreen();
-            });
-        });
     };
 
     PitchDeck.prototype.next = function () {
@@ -277,53 +256,6 @@
         } else {
             icon.textContent = '►';
             this.btnPlay.setAttribute('aria-pressed', 'false');
-        }
-    };
-
-    PitchDeck.prototype.enterFullscreen = function () {
-        var element = this.root;
-        if (element.requestFullscreen) {
-            element.requestFullscreen();
-        } else if (element.webkitRequestFullscreen) {
-            element.webkitRequestFullscreen();
-        } else if (element.mozRequestFullScreen) {
-            element.mozRequestFullScreen();
-        } else if (element.msRequestFullscreen) {
-            element.msRequestFullscreen();
-        }
-    };
-
-    PitchDeck.prototype.exitFullscreen = function () {
-        if (document.exitFullscreen) {
-            document.exitFullscreen();
-        } else if (document.webkitExitFullscreen) {
-            document.webkitExitFullscreen();
-        } else if (document.mozCancelFullScreen) {
-            document.mozCancelFullScreen();
-        } else if (document.msExitFullscreen) {
-            document.msExitFullscreen();
-        }
-    };
-
-    PitchDeck.prototype.isFullscreen = function () {
-        return document.fullscreenElement === this.root ||
-            document.webkitFullscreenElement === this.root ||
-            document.mozFullScreenElement === this.root ||
-            document.msFullscreenElement === this.root;
-    };
-
-    PitchDeck.prototype.syncFullscreen = function () {
-        if (this.isFullscreen()) {
-            this.root.classList.add('is-fullscreen');
-            this.root.focus({ preventScroll: true });
-            if (this.btnFullscreen) {
-                this.btnFullscreen.setAttribute('aria-pressed', 'true');
-            }
-        } else {
-            this.root.classList.remove('is-fullscreen');
-            if (this.btnFullscreen) {
-                this.btnFullscreen.setAttribute('aria-pressed', 'false');
-            }
         }
     };
 

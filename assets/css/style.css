@@ -4,7 +4,6 @@
 
 :root {
     --pitch-deck-surface: rgba(248, 250, 252, 0.96);
-    --pitch-deck-surface-fullscreen: rgba(17, 24, 39, 0.9);
     --pitch-deck-text: #0f172a;
     --pitch-deck-text-inverse: #f8fafc;
     --pitch-deck-accent: #2563eb;
@@ -24,8 +23,10 @@
     display: flex;
     flex-direction: column;
     gap: var(--pitch-deck-gap);
-    width: min(100%, 960px);
-    margin: clamp(24px, 6vw, 72px) auto;
+    width: 100%;
+    max-width: var(--pitch-deck-max-width, 960px);
+    margin-block: clamp(24px, 6vw, 72px);
+    margin-inline: auto;
     padding: clamp(12px, 3vw, 28px);
     border-radius: var(--pitch-deck-radius);
     background: rgba(255, 255, 255, 0.95);
@@ -33,36 +34,20 @@
     color: var(--pitch-deck-text);
     transition: box-shadow 0.3s ease, transform 0.3s ease;
     outline: 0;
+    box-sizing: border-box;
 }
 
 .pitch-deck-deck:focus-visible {
     box-shadow: var(--pitch-deck-shadow), 0 0 0 4px rgba(37, 99, 235, 0.35);
 }
 
-.pitch-deck-deck.is-fullscreen {
-    position: fixed;
-    inset: 0;
-    margin: 0;
-    border-radius: 0;
-    width: 100vw;
-    height: 100vh;
-    padding: clamp(12px, 4vw, 40px);
-    background: #0f172a;
-    color: var(--pitch-deck-text-inverse);
-    box-shadow: none;
-    z-index: 10000;
-}
-
-.pitch-deck-deck.is-fullscreen .pitch-deck-slide {
-    background: var(--pitch-deck-surface-fullscreen);
-    color: var(--pitch-deck-text-inverse);
-    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.08);
-}
 
 .pitch-deck-slides {
     position: relative;
     width: 100%;
+    padding-inline: clamp(52px, 7vw, 96px);
     overflow: hidden;
+    box-sizing: border-box;
 }
 
 .pitch-deck-slide {
@@ -96,11 +81,10 @@
 }
 
 .pitch-deck-controls {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-wrap: wrap;
-    gap: clamp(12px, 2vw, 24px);
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 5;
 }
 
 .pitch-deck-button {
@@ -119,6 +103,7 @@
     cursor: pointer;
     transition: transform 0.25s ease, box-shadow 0.25s ease, background 0.25s ease;
     box-shadow: 0 12px 24px rgba(37, 99, 235, 0.25);
+    pointer-events: auto;
 }
 
 .pitch-deck-button:focus-visible,
@@ -135,6 +120,27 @@
     transform: none;
 }
 
+.pitch-deck-button--prev,
+.pitch-deck-button--next {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.pitch-deck-button--prev {
+    left: clamp(8px, 3vw, 32px);
+}
+
+.pitch-deck-button--next {
+    right: clamp(8px, 3vw, 32px);
+}
+
+.pitch-deck-button--play {
+    position: absolute;
+    bottom: clamp(12px, 3vw, 28px);
+    right: clamp(12px, 3vw, 32px);
+}
+
 .pitch-deck-progress {
     width: 100%;
     padding: 0 clamp(8px, 2vw, 16px);
@@ -149,19 +155,11 @@
     overflow: hidden;
 }
 
-.pitch-deck-deck.is-fullscreen .pitch-deck-progress__track {
-    background: var(--pitch-deck-progress-track-dark);
-}
-
 .pitch-deck-progress__bar {
     width: 0;
     height: 100%;
     background: var(--pitch-deck-progress-bar);
     transition: width 0.3s ease;
-}
-
-.pitch-deck-deck.is-fullscreen .pitch-deck-progress__bar {
-    background: var(--pitch-deck-progress-bar-dark);
 }
 
 .pitch-deck-counter {
@@ -177,10 +175,6 @@
     letter-spacing: 0.07em;
     text-transform: uppercase;
     font-size: 0.75rem;
-}
-
-.pitch-deck-deck.is-fullscreen .pitch-deck-counter {
-    background: rgba(15, 23, 42, 0.32);
 }
 
 .pitch-deck-counter__separator {
@@ -221,6 +215,17 @@ body.wp-admin .pitch-deck-slide:not(:last-child) {
     font-weight: 600;
 }
 
+.wp-block-pitch-deck-deck.alignwide.pitch-deck-deck,
+.wp-block-pitch-deck-deck.alignfull.pitch-deck-deck {
+    --pitch-deck-max-width: 1200px;
+    margin-inline: auto !important;
+}
+
+.wp-block-pitch-deck-deck.alignfull.pitch-deck-deck {
+    --pitch-deck-max-width: 1400px;
+    margin-inline: auto !important;
+}
+
 /* Responsive breakpoints */
 @media (max-width: 600px) {
     .pitch-deck-deck {
@@ -228,29 +233,47 @@ body.wp-admin .pitch-deck-slide:not(:last-child) {
         padding: 12px;
     }
 
+    .pitch-deck-slides {
+        padding-inline: 0;
+    }
+
     .pitch-deck-slide {
         padding: clamp(18px, 6vw, 28px);
     }
 
     .pitch-deck-controls {
+        position: static;
+        pointer-events: auto;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-wrap: wrap;
         gap: 10px;
+        margin-top: 12px;
     }
 
-    .pitch-deck-button {
+    .pitch-deck-controls .pitch-deck-button {
+        position: static;
+        transform: none;
         flex: 1 0 auto;
         min-width: 44px;
         padding-inline: 1rem;
+    }
+
+    .pitch-deck-button--play,
+    .pitch-deck-button--fullscreen {
+        margin-left: 0;
     }
 }
 
 @media (min-width: 601px) and (max-width: 1024px) {
     .pitch-deck-deck {
-        width: min(100%, 860px);
+        --pitch-deck-max-width: 1024px;
     }
 }
 
 @media (min-width: 1025px) {
     .pitch-deck-deck {
-        width: min(100%, 1024px);
+        --pitch-deck-max-width: 1120px;
     }
 }

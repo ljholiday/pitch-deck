@@ -306,15 +306,6 @@
                             },
                             createElement('span', { 'aria-hidden': 'true' }, '›')
                         ),
-                        createElement(
-                            'button',
-                            {
-                                type: 'button',
-                                className: 'pitch-deck-button pitch-deck-button--fullscreen',
-                                'aria-label': __('Toggle fullscreen', 'pitch-deck')
-                            },
-                            createElement('span', { 'aria-hidden': 'true' }, '⤢')
-                        )
                     )
                 );
             }
