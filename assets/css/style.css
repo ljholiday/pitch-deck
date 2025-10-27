@@ -1,0 +1,256 @@
+/**
+ * Pitch Deck canonical stylesheet (editor + front-end).
+ */
+
+:root {
+    --pitch-deck-surface: rgba(248, 250, 252, 0.96);
+    --pitch-deck-surface-fullscreen: rgba(17, 24, 39, 0.9);
+    --pitch-deck-text: #0f172a;
+    --pitch-deck-text-inverse: #f8fafc;
+    --pitch-deck-accent: #2563eb;
+    --pitch-deck-accent-strong: #1d4ed8;
+    --pitch-deck-progress-track: rgba(15, 23, 42, 0.1);
+    --pitch-deck-progress-track-dark: rgba(148, 163, 184, 0.35);
+    --pitch-deck-progress-bar: #2563eb;
+    --pitch-deck-progress-bar-dark: #38bdf8;
+    --pitch-deck-shadow: 0 20px 40px rgba(15, 23, 42, 0.15);
+    --pitch-deck-radius: 20px;
+    --pitch-deck-gap: clamp(16px, 3vw, 32px);
+    --pitch-deck-slide-padding: clamp(24px, 5vw, 56px);
+}
+
+.pitch-deck-deck {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: var(--pitch-deck-gap);
+    width: min(100%, 960px);
+    margin: clamp(24px, 6vw, 72px) auto;
+    padding: clamp(12px, 3vw, 28px);
+    border-radius: var(--pitch-deck-radius);
+    background: rgba(255, 255, 255, 0.95);
+    box-shadow: var(--pitch-deck-shadow);
+    color: var(--pitch-deck-text);
+    transition: box-shadow 0.3s ease, transform 0.3s ease;
+    outline: 0;
+}
+
+.pitch-deck-deck:focus-visible {
+    box-shadow: var(--pitch-deck-shadow), 0 0 0 4px rgba(37, 99, 235, 0.35);
+}
+
+.pitch-deck-deck.is-fullscreen {
+    position: fixed;
+    inset: 0;
+    margin: 0;
+    border-radius: 0;
+    width: 100vw;
+    height: 100vh;
+    padding: clamp(12px, 4vw, 40px);
+    background: #0f172a;
+    color: var(--pitch-deck-text-inverse);
+    box-shadow: none;
+    z-index: 10000;
+}
+
+.pitch-deck-deck.is-fullscreen .pitch-deck-slide {
+    background: var(--pitch-deck-surface-fullscreen);
+    color: var(--pitch-deck-text-inverse);
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.08);
+}
+
+.pitch-deck-slides {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+}
+
+.pitch-deck-slide {
+    display: none;
+    position: relative;
+    padding: var(--pitch-deck-slide-padding);
+    border-radius: clamp(12px, 3vw, 24px);
+    background: var(--pitch-deck-surface);
+    color: inherit;
+    transition: opacity 0.35s ease, transform 0.35s ease;
+    box-shadow: inset 0 0 0 1px rgba(148, 163, 184, 0.18);
+}
+
+.pitch-deck-slide.is-active {
+    display: block;
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.pitch-deck-slide:not(.is-active) {
+    opacity: 0;
+    transform: translateY(24px);
+}
+
+.pitch-deck-slide > *:first-child {
+    margin-top: 0;
+}
+
+.pitch-deck-slide > *:last-child {
+    margin-bottom: 0;
+}
+
+.pitch-deck-controls {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: clamp(12px, 2vw, 24px);
+}
+
+.pitch-deck-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.1rem;
+    border: 0;
+    border-radius: 999px;
+    background: var(--pitch-deck-accent);
+    color: #fff;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: transform 0.25s ease, box-shadow 0.25s ease, background 0.25s ease;
+    box-shadow: 0 12px 24px rgba(37, 99, 235, 0.25);
+}
+
+.pitch-deck-button:focus-visible,
+.pitch-deck-button:hover {
+    background: var(--pitch-deck-accent-strong);
+    transform: translateY(-2px);
+    box-shadow: 0 16px 32px rgba(37, 99, 235, 0.32);
+}
+
+.pitch-deck-button:disabled {
+    background: rgba(148, 163, 184, 0.45);
+    box-shadow: none;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.pitch-deck-progress {
+    width: 100%;
+    padding: 0 clamp(8px, 2vw, 16px);
+}
+
+.pitch-deck-progress__track {
+    position: relative;
+    width: 100%;
+    height: 6px;
+    background: var(--pitch-deck-progress-track);
+    border-radius: 999px;
+    overflow: hidden;
+}
+
+.pitch-deck-deck.is-fullscreen .pitch-deck-progress__track {
+    background: var(--pitch-deck-progress-track-dark);
+}
+
+.pitch-deck-progress__bar {
+    width: 0;
+    height: 100%;
+    background: var(--pitch-deck-progress-bar);
+    transition: width 0.3s ease;
+}
+
+.pitch-deck-deck.is-fullscreen .pitch-deck-progress__bar {
+    background: var(--pitch-deck-progress-bar-dark);
+}
+
+.pitch-deck-counter {
+    align-self: center;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 0.4rem 0.9rem;
+    border-radius: 999px;
+    background: rgba(15, 23, 42, 0.08);
+    color: inherit;
+    font-weight: 600;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    font-size: 0.75rem;
+}
+
+.pitch-deck-deck.is-fullscreen .pitch-deck-counter {
+    background: rgba(15, 23, 42, 0.32);
+}
+
+.pitch-deck-counter__separator {
+    opacity: 0.65;
+}
+
+/* Editor adjustments */
+.editor-styles-wrapper .pitch-deck-deck,
+body.wp-admin .pitch-deck-deck {
+    box-shadow: none;
+    background: rgba(255, 255, 255, 0.9);
+    border: 1px solid rgba(15, 23, 42, 0.08);
+}
+
+.editor-styles-wrapper .pitch-deck-slide,
+body.wp-admin .pitch-deck-slide {
+    display: block;
+    opacity: 1;
+    transform: none;
+    box-shadow: inset 0 0 0 1px rgba(148, 163, 184, 0.18);
+}
+
+.editor-styles-wrapper .pitch-deck-slide:not(:last-child),
+body.wp-admin .pitch-deck-slide:not(:last-child) {
+    margin-bottom: 1rem;
+}
+
+.pitch-deck-editor-toolbar {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    margin-bottom: 1rem;
+}
+
+.pitch-deck-editor-toolbar .components-button {
+    border-radius: 999px;
+    padding-inline: 1rem;
+    font-weight: 600;
+}
+
+/* Responsive breakpoints */
+@media (max-width: 600px) {
+    .pitch-deck-deck {
+        margin: 16px auto;
+        padding: 12px;
+    }
+
+    .pitch-deck-slide {
+        padding: clamp(18px, 6vw, 28px);
+    }
+
+    .pitch-deck-controls {
+        gap: 10px;
+    }
+
+    .pitch-deck-button {
+        flex: 1 0 auto;
+        min-width: 44px;
+        padding-inline: 1rem;
+    }
+}
+
+@media (min-width: 601px) and (max-width: 1024px) {
+    .pitch-deck-deck {
+        width: min(100%, 860px);
+    }
+}
+
+@media (min-width: 1025px) {
+    .pitch-deck-deck {
+        width: min(100%, 1024px);
+    }
+}
